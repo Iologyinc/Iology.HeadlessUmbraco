@@ -16,30 +16,48 @@ namespace Iology.HeadlessUmbraco.Core.Controllers;
 
 public abstract class HeadlessApiController : UmbracoApiController
 {
-    protected HeadlessApiController(IContentElementBuilder contentElementBuilder, IOutputRenderer outputRenderer, UmbracoHelper umbracoHelper)
+    protected virtual IContentElementBuilder ContentElementBuilder { get; }
+    protected virtual IOutputRenderer OutputRenderer { get; }
+    protected virtual IPageDataBuilder PageDataBuilder { get; }
+    protected virtual UmbracoHelper UmbracoHelper { get; }
+
+    protected HeadlessApiController(
+        IContentElementBuilder contentElementBuilder,
+        IOutputRenderer outputRenderer,
+        IPageDataBuilder pageDataBuilder,
+        UmbracoHelper umbracoHelper)
     {
         ContentElementBuilder = contentElementBuilder;
         OutputRenderer = outputRenderer;
+        PageDataBuilder = pageDataBuilder;
         UmbracoHelper = umbracoHelper;
     }
 
-    protected IContentElementBuilder ContentElementBuilder { get; }
-
-    protected IOutputRenderer OutputRenderer { get; }
-        
-    protected UmbracoHelper UmbracoHelper { get; }
-
-    protected async Task<IActionResult> ContentForAsync(int id, CancellationToken cancellationToken)
+    protected virtual async Task<IActionResult> ContentForAsync(int id, CancellationToken cancellationToken)
         => await ContentResultForAsync(UmbracoHelper.Content(id), cancellationToken).ConfigureAwait(false);
 
-    protected async Task<IActionResult> ContentForAsync(Guid id, CancellationToken cancellationToken)
+    protected virtual async Task<IActionResult> ContentForAsync(Guid id, CancellationToken cancellationToken)
         => await ContentResultForAsync(UmbracoHelper.Content(id), cancellationToken).ConfigureAwait(false);
 
-    protected async Task<IActionResult> ContentResultForAsync(IPublishedContent content, CancellationToken cancellationToken) 
+    protected virtual async Task<IActionResult> ContentResultForAsync(IPublishedContent? content, CancellationToken cancellationToken)
         => content != null
             ? OutputRenderer.ActionResult(await ContentElementForAsync(content, cancellationToken).ConfigureAwait(false))
             : NotFound();
 
-    protected async Task<IContentElement> ContentElementForAsync(IPublishedContent content, CancellationToken cancellationToken) 
+    protected virtual async Task<IContentElement> ContentElementForAsync(IPublishedContent content, CancellationToken cancellationToken)
         => await ContentElementBuilder.ContentElementForAsync(content, cancellationToken).ConfigureAwait(false);
+
+    protected virtual async Task<IActionResult> PageForAsync(int id, CancellationToken cancellationToken)
+        => await PageResultForAsync(UmbracoHelper.Content(id), cancellationToken).ConfigureAwait(false);
+
+    protected virtual async Task<IActionResult> PageForAsync(Guid id, CancellationToken cancellationToken)
+        => await PageResultForAsync(UmbracoHelper.Content(id), cancellationToken).ConfigureAwait(false);
+
+    protected virtual async Task<IActionResult> PageResultForAsync(IPublishedContent? content, CancellationToken cancellationToken)
+        => content != null
+            ? OutputRenderer.ActionResult(await PageDataForAsync(content, cancellationToken).ConfigureAwait(false))
+            : NotFound();
+
+    protected virtual async Task<IPageData> PageDataForAsync(IPublishedContent content, CancellationToken cancellationToken)
+        => await PageDataBuilder.BuildPageDataAsync(content, cancellationToken).ConfigureAwait(false);
 }

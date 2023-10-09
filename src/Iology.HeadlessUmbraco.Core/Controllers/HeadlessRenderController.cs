@@ -31,6 +31,10 @@ public class HeadlessRenderController : HeadlessRenderController<IPublishedConte
 
 public abstract class HeadlessRenderController<T> : RenderController where T : IPublishedContent
 {
+    protected virtual IContentElementBuilder ContentElementBuilder { get; }
+    protected virtual IOutputRenderer OutputRenderer { get; }
+    protected virtual IPageDataBuilder PageDataBuilder { get; }
+
     protected HeadlessRenderController(
         IContentElementBuilder contentElementBuilder,
         IOutputRenderer outputRenderer,
@@ -45,12 +49,6 @@ public abstract class HeadlessRenderController<T> : RenderController where T : I
         OutputRenderer = outputRenderer;
         PageDataBuilder = pageDataBuilder;
     }
-
-    protected IContentElementBuilder ContentElementBuilder { get; }
-
-    protected IOutputRenderer OutputRenderer { get; }
-        
-    protected IPageDataBuilder PageDataBuilder { get; }
 
     [NonAction]
     public override IActionResult Index()

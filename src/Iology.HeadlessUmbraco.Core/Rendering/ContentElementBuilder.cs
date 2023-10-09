@@ -13,9 +13,9 @@ namespace Iology.HeadlessUmbraco.Core.Rendering;
 
 public class ContentElementBuilder : IContentElementBuilder
 {
-    private readonly IRenderingService _renderingService;
-    private readonly IFallbackProvider _fallbackProvider;
-    private readonly IPublishedValueFallback _publishedValueFallback;
+    protected readonly IRenderingService _renderingService;
+    protected readonly IFallbackProvider _fallbackProvider;
+    protected readonly IPublishedValueFallback _publishedValueFallback;
 
     public ContentElementBuilder(
         IRenderingService renderingService,

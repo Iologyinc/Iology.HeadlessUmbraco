@@ -7,7 +7,7 @@ using Umbraco.Cms.Core.Models.PublishedContent;
 
 namespace Iology.HeadlessUmbraco.Core.Rendering.Providers;
 
-    public class FallbackProvider : IFallbackProvider
+public class FallbackProvider : IFallbackProvider
 {
     private readonly Fallback _fallback;
 

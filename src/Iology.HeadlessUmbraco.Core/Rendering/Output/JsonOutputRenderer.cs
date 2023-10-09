@@ -13,14 +13,16 @@ namespace Iology.HeadlessUmbraco.Core.Rendering.Output;
 
 public class JsonOutputRenderer : IOutputRenderer
 {
-    public string Serialize(object value) => JsonConvert.SerializeObject(value, JsonSerializerSettings());
+    public string Serialize(object value)
+        => JsonConvert.SerializeObject(value, JsonSerializerSettings());
 
-    public IActionResult ActionResult(object value) => new ContentResult
-    {
-        Content = Serialize(value),
-        ContentType = "application/json",
-        StatusCode = (int)HttpStatusCode.OK
-    };
+    public IActionResult ActionResult(object value)
+        => new ContentResult
+        {
+            Content = Serialize(value),
+            ContentType = "application/json",
+            StatusCode = (int)HttpStatusCode.OK
+        };
 
     protected virtual JsonSerializerSettings JsonSerializerSettings()
         => new JsonSerializerSettings
