@@ -23,10 +23,10 @@ public class MediaPickerPropertyRenderer : IPropertyRenderer
         _urlProvider = urlProvider;
     }
 
-    public string PropertyEditorAlias => Constants.PropertyEditors.Aliases.MediaPicker;
+    public string PropertyEditorAlias => Constants.PropertyEditors.Aliases.MediaPicker3;
 
     public Type TypeFor(IPublishedPropertyType propertyType)
-        => propertyType.DataType.ConfigurationAs<MediaPickerConfiguration>()!.Multiple
+        => propertyType.DataType.ConfigurationAs<MediaPicker3Configuration>()!.Multiple
             ? typeof(Media[])
             : typeof(Media);
 
